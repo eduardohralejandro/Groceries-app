@@ -1,12 +1,23 @@
-import React from 'react';
-import './App.css';
+import React, { Fragment } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "./App.css";
 
-function App() {
+import Lists from "./components/Lists/Lists";
+import Expenses from "./components/Expenses/Expenses";
+import Recipes from "./components/Recipes/Recipes";
+import Navbar from "./components/Navbar/Navbar";
+
+const App = () => {
   return (
-    <div className="App">
-     
-    </div>
+    <Fragment>
+      <Router>
+        <Navbar />
+        <Route exact path="/" component={Lists} />
+        <Route path="/expenses" component={Expenses} />
+        <Route path="/recipes" component={Recipes} />
+      </Router>
+    </Fragment>
   );
-}
+};
 
 export default App;
