@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styles from "./expenses.module.scss";
+// import styles from "./expenses.module.scss";
 const Expenses = () => {
   return (
     <Fragment>
