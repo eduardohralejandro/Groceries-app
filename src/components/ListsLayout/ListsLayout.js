@@ -1,8 +1,11 @@
-import React, { Fragment, Component } from "react";
+import React, { Fragment, Component, createContext } from "react";
 import styles from "./listsLayout.module.scss";
 
 // import SearchBar from './SearchBar'
+import Recipes from "../Recipes/Recipes";
 import Items from "./Items";
+
+export const ContextProvider = createContext();
 class ListsLayout extends Component {
   state = {
     groupTitle: "",
@@ -13,14 +16,16 @@ class ListsLayout extends Component {
     checkbox: false,
     person: "",
     price: "",
-    saveInfo: false
+    saveInfo: false,
+    showRecipes: false,
+    newItems: []
   };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveShoppingList = () => {
+  saveShoppingList = async () => {
     const { groupTitle, items } = this.state;
     const newList = { title: groupTitle, items };
 
@@ -29,7 +34,8 @@ class ListsLayout extends Component {
       showInputs: false,
       items: [],
       person: "",
-      price: ""
+      price: "",
+      newItems: items
     }));
   };
 
@@ -81,89 +87,110 @@ class ListsLayout extends Component {
     });
   };
 
+  displayRecipes = () => {
+    this.setState({ showRecipes: !this.state.showRecipes });
+  };
   render() {
-    const { shoppingLists, showInputs, items } = this.state;
+    const {
+      shoppingLists,
+      showInputs,
+      items,
+      showRecipes,
+      newItems
+    } = this.state;
     return (
       <Fragment>
-        {/* <SearchBar />  */}
-
-        <button onMouseDown={() => this.showInputs()}>+ Add new list</button>
-        {showInputs ? (
+        {/* <SearchBar  />  */}
+        <button onClick={() => this.displayRecipes()}>
+          {!this.state.showRecipes ? "recipes" : "lists"}
+        </button>
+        {showRecipes ? (
           <div>
-            <Items
-              saveShoppingList={this.saveShoppingList}
-              addItems={this.addItems}
-              showInputs={this.state.showInputs}
-              items={items}
-              handleChange={this.handleChange}
-            />
+            <Recipes shoppingLists={shoppingLists} newItems={newItems} />
           </div>
         ) : (
-          <p
-            style={
-              shoppingLists.length > 0
-                ? { display: "none" }
-                : { display: "block" }
-            }
-          >
-            your items will be here
-          </p>
-        )}
+          <div>
+            <button onMouseDown={() => this.showInputs()}>
+              + Add new list
+            </button>
+            {showInputs ? (
+              <div>
+                <Items
+                  saveShoppingList={this.saveShoppingList}
+                  addItems={this.addItems}
+                  showInputs={showInputs}
+                  items={items}
+                  handleChange={this.handleChange}
+                />
+              </div>
+            ) : (
+              <p
+                style={
+                  shoppingLists.length > 0
+                    ? { display: "none" }
+                    : { display: "block" }
+                }
+              >
+                your items will be here
+              </p>
+            )}
 
-        {shoppingLists.map((el, key) => {
-          return (
-            <div key={key} className={styles.ItemsStyle}>
-              <p>{el.title}</p>
+            {shoppingLists.map((el, key) => {
+              return (
+                <div key={key} className={styles.ItemsStyle}>
+                  <p>{el.title}</p>
 
-              {el.items.map((el, key2) => {
-                const uniqueKey = `${key}-${el.itemTitle}-${key2}`;
-                return (
-                  <div key={uniqueKey}>
-                    <p
-                      style={
-                        this.state.saveInfo === 0
-                          ? { textDecoration: "line-through" }
-                          : null
-                      }
-                    >
-                      {el.itemTitle}
-                    </p>
-                    <p>{el.person}</p>
-                    <p>{el.price}</p>
-                    <input
-                      checked={el.checkbox}
-                      name="checkboxname"
-                      onChange={e => this.handleCheckbox(e, uniqueKey)}
-                      type="checkbox"
-                    />
-                    {this.state.saveInfo === uniqueKey ? (
-                      <div>
-                        <input
-                          type="number"
-                          name="price"
-                          onChange={e => this.handleChange(e)}
-                          placeholder="price"
-                        />
-                        <input
-                          name="person"
-                          onChange={e => this.handleChange(e)}
-                          placeholder="person"
-                        />
-                        <button
-                          onClick={e => {
-                            this.saveInfo(e, uniqueKey);
-                          }}
+                  {el.items.map((el, key2) => {
+                    const uniqueKey = `${key}-${el.itemTitle}-${key2}`;
+                    return (
+                      <div key={uniqueKey}>
+                        <p
+                          style={
+                            this.state.saveInfo === 0
+                              ? { textDecoration: "line-through" }
+                              : null
+                          }
                         >
-                          save
-                        </button>
+                          {el.itemTitle}
+                        </p>
+                        <p>{el.person}</p>
+                        <p>{el.price}</p>
+                        <input
+                          checked={el.checkbox}
+                          name="checkboxname"
+                          onChange={e => this.handleCheckbox(e, uniqueKey)}
+                          type="checkbox"
+                        />
+                        {this.state.saveInfo === uniqueKey ? (
+                          <div>
+                            <input
+                              type="number"
+                              name="price"
+                              onChange={e => this.handleChange(e)}
+                              placeholder="price"
+                            />
+                            <input
+                              name="person"
+                              onChange={e => this.handleChange(e)}
+                              placeholder="person"
+                            />
+                            <button
+                              onClick={e => {
+                                this.saveInfo(e, uniqueKey);
+                              }}
+                            >
+                              save
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Fragment>
     );
   }
