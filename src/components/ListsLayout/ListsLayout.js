@@ -1,11 +1,10 @@
-import React, { Fragment, Component, createContext } from "react";
+import React, { Fragment, Component } from "react";
 import styles from "./listsLayout.module.scss";
 
-// import SearchBar from './SearchBar'
+import Expenses from '../Expenses/Expenses'
 import Recipes from "../Recipes/Recipes";
 import Items from "./Items";
 
-export const ContextProvider = createContext();
 class ListsLayout extends Component {
   state = {
     groupTitle: "",
@@ -18,7 +17,8 @@ class ListsLayout extends Component {
     price: "",
     saveInfo: false,
     showRecipes: false,
-    newItems: []
+    newItems: [],
+    month:""
   };
 
   handleChange = e => {
@@ -41,6 +41,8 @@ class ListsLayout extends Component {
 
   saveInfo = (_, ID) => {
     const { shoppingLists, price, person } = this.state;
+    const date = new Date(); 
+    const month = date.toLocaleString('default', { month: 'long' });
 
     shoppingLists.forEach((list, idList) => {
       return list.items.forEach((item, key) => {
@@ -48,11 +50,13 @@ class ListsLayout extends Component {
         if (ID === newKey) {
           item.price = price;
           item.person = person;
+          item.month = month;
           const newState = [...shoppingLists];
           this.setState(() => ({
             shoppingLists: newState,
             person: "",
             price: "",
+            date:"",
             saveInfo: false
           }));
         }
@@ -61,8 +65,8 @@ class ListsLayout extends Component {
   };
 
   addItems = () => {
-    const { itemTitle, checkbox, person, price } = this.state;
-    const newElement = { itemTitle, checkbox, person, price };
+    const { itemTitle, checkbox, person, price, month } = this.state;
+    const newElement = { itemTitle, checkbox, person, price, month };
     this.setState(prevState => ({
       items: [...prevState.items, newElement]
     }));
@@ -71,6 +75,7 @@ class ListsLayout extends Component {
   showInputs = () => {
     this.setState({ showInputs: true, items: [] });
   };
+
   handleCheckbox = async (e, ID) => {
     const { shoppingLists } = this.state;
     shoppingLists.forEach((element, idList) => {
@@ -98,14 +103,17 @@ class ListsLayout extends Component {
       showRecipes,
       newItems
     } = this.state;
+
     return (
       <Fragment>
         {/* <SearchBar  />  */}
+       
         <button onClick={() => this.displayRecipes()}>
           {!this.state.showRecipes ? "recipes" : "lists"}
         </button>
         {showRecipes ? (
           <div>
+             <Expenses  shoppingLists={shoppingLists} />
             <Recipes shoppingLists={shoppingLists} newItems={newItems} />
           </div>
         ) : (
