@@ -1,20 +1,22 @@
 import React, { Fragment, Component } from "react";
-import styles from "./expenses.module.scss";
 import * as d3 from "d3"
-// // import {sample} from './months'
+
+import styles from "./expenses.module.scss";
+
 class Expenses extends Component {
   state = {
-    charData: []
+    charData: [],
+    dates:null
   }
 
  async componentDidMount() {
-    const {shoppingLists} = this.props
+    const { shoppingLists } = this.props
    await shoppingLists.map(element => {
       return (
         element.items.map(el => {
           const dataChartValues = {month:el.month, value:el.price }
           return(
-            this.setState((prevState) => ({ charData: [...prevState.charData, dataChartValues]})))
+            this.setState((prevState) => ({ charData: [...prevState.charData, dataChartValues] })))
         })
       )
     })
@@ -22,112 +24,61 @@ class Expenses extends Component {
   }
 
   drawBarChartCompany = () => {
-    const {charData} = this.state
-  //Strutcture: company data Example, this will  be removed for future versions
-    const companyData = [
-      {
-        month: 'January',
-        value: 0
-      },
-      {
-        month: 'February',
-        value: 0
-      },
-      {
-        month: 'March',
-        value: 0
-      },
-      {
-        month: 'April',
-        value: 0
-      },
-      {
-        month: 'May',
-        value: 0
-      },
-      {
-        month: 'June',
-        value: 0
-      },
-      {
-        month: 'July',
-        value: 0
-      },
-      {
-        month: 'August',
-        value: 0
-      },
-      {
-        month: 'September',
-        value: 0
-      },
-      {
-        month: 'October',
-        value: 0
-      },
-      {
-        month: 'November',
-        value: 0
-      },
-      {
-        month: 'December',
-        value: 0
-      }
-    ];
+    const { charData } = this.state
 
+    const dates=[{month:'January',value:0},{month:'February',value:0},{month:'March',value:0},{month:'April',value:0},{month:'May',value:0},{month:'June',value:0},{month:'July',value:0},{month:'August',value:0},{month:'September',value:0},{month:'October',value:0},{month:'November',value:0},{month:'December',value:0}];
+    /** add all the values from charData(shoppingLists data)  & assign it to dates array to feed graph data*/
     charData.map(el => {
       return (
-        companyData.forEach(element => {
+        dates.map(element => {
           if (element.month === el.month) {
             const sumValues = [parseInt(el.value) + parseInt(element.value)]
-
             const sum = sumValues.reduce((a, b) => {
               return a + b;
             }, 0)
               return element.value = sum
-            }
+          }
+          return element      
           })
         )
     })
 
+    /** select div from ref, pass it as argument select from d3 library*/
     const svg = d3.select(this.refs.canvas);
-     d3.select('#container');
-    
+    d3.select('#container');
+   
     const margin = 60;
-    const width = 550 ;
-    const height = 200 ;
-
+    const width = 550;
+    const height = 200;
+   
     const chart = svg.append('g')
-      .attr('transform', `translate(${margin}, ${margin})`);
-
+     .attr('transform', `translate(${margin}, ${margin})`);
+   
     const xScale = d3.scaleBand()
-      .range([0, width])
-      .domain(companyData.map((element) => element.month))
-      .padding(0.6)
-    
+     .range([0, width])
+     .domain(dates.map((element) => element.month))
+     .padding(0.6)
+   
     const yScale = d3.scaleLinear()
-      .range([height, 0])
-      .domain([0, 1000]);
-    
-    //  (() => d3.axisLeft()
-    //   .scale(yScale))()
-
+     .range([height, 0])
+     .domain([0, 1000]);
+   
     chart.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
-
+     .attr('transform', `translate(0, ${height})`)
+     .call(d3.axisBottom(xScale));
+   
     chart.append('g')
-      .call(d3.axisLeft(yScale));
-    
-     chart.selectAll()
-    .data(companyData)
-    .enter()
-      .append('rect')
-      .style("fill","green")
-    .attr('x', (el) => xScale(el.month))
-    .attr('y', (el) => yScale(el.value))
-    .attr('height', (el) => height - yScale(el.value))
-      .attr('width', xScale.bandwidth())
+     .call(d3.axisLeft(yScale));
+   
+    chart.selectAll()
+     .data(dates)
+     .enter()
+     .append('rect')
+     .style("fill", "green")
+     .attr('x', (el) => xScale(el.month))
+     .attr('y', (el) => yScale(el.value))
+     .attr('height', (el) => height - yScale(el.value))
+     .attr('width', xScale.bandwidth())
       
     //FOR NEXT REFACTOR: styling
     // const barTransition = d3.transition()

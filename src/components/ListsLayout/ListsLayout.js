@@ -1,204 +1,170 @@
 import React, { Fragment, Component } from "react";
-import styles from "./listsLayout.module.scss";
+// import styles from "./listsLayout.module.scss";
 
-import Expenses from '../Expenses/Expenses'
-import Recipes from "../Recipes/Recipes";
-import Items from "./Items";
 
+import Items from "../Items/Items";
+import CreateLists from '../createLists/CreateLists'
+import AddItems from '../AddItems/AddItems'
 class ListsLayout extends Component {
+  
   state = {
     groupTitle: "",
-    itemTitle: "",
-    items: [],
     shoppingLists: [],
-    showInputs: false,
-    checkbox: false,
-    person: "",
-    price: "",
     saveInfo: false,
     showRecipes: false,
     newItems: [],
-    month:""
+    messageError: "",
+    showInputs: false
   };
-
+  
+  componentDidUpdate(prevProps, prevState) {
+  const {shoppingLists} = this.state
+    if (prevState.shoppingLists !== shoppingLists) {
+      this.setState({showInputs:false})
+    }
+  }
+  
+showInputsFunc = () => {
+   this.setState({ showInputs: true });
+ };
+ 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  saveShoppingList = async () => {
-    const { groupTitle, items } = this.state;
-    const newList = { title: groupTitle, items };
+  // newItemTitle = (e, ID, newItemTitle) => {
+  //   if (e.keyCode === 13) {
+  //     this.setState((prevState) => ({
+  //       shoppingLists: prevState.shoppingLists.map((list, idList) => {
+  //         const newShopList = {
+  //           title: list.title, items: list.items.map((item, key) => {
+  //             console.log(item)
+  //             const newKey = `${idList}-${item.itemTitle}-${key}`;
+  //             if (ID === newKey) {
+  //               return { itemTitle: newItemTitle, price: item.price, person: item.person, month:item.month, checkbox:item.checkbox}
+  //             }
+  //             return item
+  //           })
+  //         }
+  //         return newShopList
+  //       })
+  //     }))
+  //   }
+  // }
 
-    this.setState(prevState => ({
-      shoppingLists: [...prevState.shoppingLists, newList],
-      showInputs: false,
-      items: [],
-      person: "",
-      price: "",
-      newItems: items
-    }));
+  saveShoppingList = (items) => {
+    const { groupTitle } = this.state;
+    const newList = { title: groupTitle, items }; 
+
+    if (!groupTitle || items.length === 0) {
+      this.setState({ messageError: "please fill the required information" })
+      return;
+    } else {
+      this.setState(prevState => ({
+        shoppingLists: [...prevState.shoppingLists, newList],
+        newItems: items,
+        messageError: "",
+        groupTitle:""
+      }));
+    }
   };
 
-  saveInfo = (_, ID) => {
-    const { shoppingLists, price, person } = this.state;
+  saveProductInfo =  (_, ID, price, person) => {
     const date = new Date(); 
-    const month = date.toLocaleString('default', { month: 'long' });
+    const month = date.toLocaleString('default', { month: 'long' })
+    if (!price || !person) {
+      this.setState({messageError:"information required"})
+      return;
+    } else {
+      this.setState((prevState) => ({
+        shoppingLists: prevState.shoppingLists.map((list, idList) => {
+          const newShopList = {
+            title: list.title, items: list.items.map((item, keyItem) => {
+    
+              const newKey = `${idList}-${item.itemTitle}-${keyItem}`;
+              if (ID === newKey) {
+                  return {itemTitle: item.itemTitle, price, person, month, checkbox:item.checkbox}
+              }
+              return item
+            })
+          }
+          return newShopList
+        }),
+        messageError:"",
+        saveInfo:false
+      }))
+    }
+  };
 
-    shoppingLists.forEach((list, idList) => {
-      return list.items.forEach((item, key) => {
-        const newKey = `${idList}-${item.itemTitle}-${key}`;
-        if (ID === newKey) {
-          item.price = price;
-          item.person = person;
-          item.month = month;
-          const newState = [...shoppingLists];
-          this.setState(() => ({
-            shoppingLists: newState,
-            person: "",
-            price: "",
-            date:"",
-            saveInfo: false
-          }));
+
+  handleCheckbox = (_, ID) => {
+     this.setState((prevState) => ({
+      shoppingLists: prevState.shoppingLists.map((list, idList) => {
+
+        const newShopList = {
+          title: list.title, items: list.items.map((item, key) => {
+            const newKey = `${idList}-${item.itemTitle}-${key}`;
+            if (ID === newKey) {
+
+              return { itemTitle: item.itemTitle, price: item.checkbox ? "" : item.price, person:item.checkbox ? "" : item.person, month:item.month,  checkbox:!item.checkbox}
+            }
+            return item
+          })
         }
-      });
-    });
+        return newShopList
+      }),
+      saveInfo: ID
+    }))
   };
-
-  addItems = () => {
-    const { itemTitle, checkbox, person, price, month } = this.state;
-    const newElement = { itemTitle, checkbox, person, price, month };
-    this.setState(prevState => ({
-      items: [...prevState.items, newElement]
-    }));
-  };
-
-  showInputs = () => {
-    this.setState({ showInputs: true, items: [] });
-  };
-
-  handleCheckbox = async (e, ID) => {
-    const { shoppingLists } = this.state;
-    shoppingLists.forEach((element, idList) => {
-      return element.items.forEach((el, key) => {
-        const newKey = `${idList}-${el.itemTitle}-${key}`;
-
-        if (ID === newKey) {
-          el.checkbox = e.target.checked;
-          const newState = [...this.state.shoppingLists];
-
-          this.setState({ saveInfo: ID, shoppingLists: newState });
-        }
-      });
-    });
-  };
-
+  deleteList = (ID) => {
+    this.setState({
+      shoppingLists: this.state.shoppingLists.filter((_, keyList) => {
+        return keyList !== ID
+      })
+    })
+  }
   displayRecipes = () => {
     this.setState({ showRecipes: !this.state.showRecipes });
   };
   render() {
-    const {
-      shoppingLists,
-      showInputs,
-      items,
-      showRecipes,
-      newItems
-    } = this.state;
+    const { messageError, items, newItems, shoppingLists, saveInfo, itemTitle, showInputs } = this.state;
 
     return (
       <Fragment>
         {/* <SearchBar  />  */}
-       
         <button onClick={() => this.displayRecipes()}>
           {!this.state.showRecipes ? "recipes" : "lists"}
         </button>
-        {showRecipes ? (
-          <div>
-             <Expenses  shoppingLists={shoppingLists} />
-            <Recipes shoppingLists={shoppingLists} newItems={newItems} />
-          </div>
-        ) : (
-          <div>
-            <button onMouseDown={() => this.showInputs()}>
-              + Add new list
-            </button>
-            {showInputs ? (
-              <div>
-                <Items
-                  saveShoppingList={this.saveShoppingList}
-                  addItems={this.addItems}
-                  showInputs={showInputs}
-                  items={items}
-                  handleChange={this.handleChange}
-                />
-              </div>
-            ) : (
-              <p
-                style={
-                  shoppingLists.length > 0
-                    ? { display: "none" }
-                    : { display: "block" }
-                }
-              >
-                your items will be here
-              </p>
-            )}
-
-            {shoppingLists.map((el, key) => {
-              return (
-                <div key={key} className={styles.ItemsStyle}>
-                  <p>{el.title}</p>
-
-                  {el.items.map((el, key2) => {
-                    const uniqueKey = `${key}-${el.itemTitle}-${key2}`;
-                    return (
-                      <div key={uniqueKey}>
-                        <p
-                          style={
-                            this.state.saveInfo === 0
-                              ? { textDecoration: "line-through" }
-                              : null
-                          }
-                        >
-                          {el.itemTitle}
-                        </p>
-                        <p>{el.person}</p>
-                        <p>{el.price}</p>
-                        <input
-                          checked={el.checkbox}
-                          name="checkboxname"
-                          onChange={e => this.handleCheckbox(e, uniqueKey)}
-                          type="checkbox"
-                        />
-                        {this.state.saveInfo === uniqueKey ? (
-                          <div>
-                            <input
-                              type="number"
-                              name="price"
-                              onChange={e => this.handleChange(e)}
-                              placeholder="price"
-                            />
-                            <input
-                              name="person"
-                              onChange={e => this.handleChange(e)}
-                              placeholder="person"
-                            />
-                            <button
-                              onClick={e => {
-                                this.saveInfo(e, uniqueKey);
-                              }}
-                            >
-                              save
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <p>{messageError}</p>
+       
+        <CreateLists
+          saveShoppingList={this.saveShoppingList}
+          showRecipes={this.state.showRecipes}
+          shoppingLists={shoppingLists}
+          newItems={newItems}
+          handleChange={this.handleChange}
+          showInputsFunc={this.showInputsFunc}
+          showInputs={showInputs}
+        />
+        <AddItems
+          addItems={this.addItems}
+          deleteItem={this.deleteItem}
+          items={items}
+          shoppingLists={shoppingLists}
+          saveShoppingList={this.saveShoppingList}
+          showInputs={showInputs}
+        />
+        <Items
+          itemTitle={itemTitle}
+          saveProductInfo={this.saveProductInfo}
+          saveInfo={saveInfo}
+          handleCheckbox={this.handleCheckbox}
+          shoppingLists={shoppingLists}
+          newItemTitle={this.newItemTitle}
+          deleteList={this.deleteList}
+        />
+        {shoppingLists.length > 0  ?  null :  <p>your items will be here</p>}
+       
       </Fragment>
     );
   }

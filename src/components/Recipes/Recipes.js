@@ -6,30 +6,35 @@ class Recipes extends Component {
   state = {
     foodRecipes: [],
     itemSelected: null,
-    error: "",
+    errorMessage: "",
     newOptions: [],
     loader: false,
     tags: ""
   };
-  async componentDidMount() {
+   componentDidMount() {
     const { shoppingLists } = this.props;
 
-    shoppingLists.forEach(element => {
-      element.items.forEach(el => {
-        const options = { label: el.itemTitle, value: el.itemTitle };
-        this.setState(prevState => ({
-          newOptions: [...prevState.newOptions, options]
-        }));
-      });
+    shoppingLists.map(list => {
+      return (
+        list.items.map(item => {
+          const options = { label: item.itemTitle, value: item.itemTitle };
+          this.setState(prevState => ({
+            newOptions: [...prevState.newOptions, options]
+          }));
+          return item
+        })
+      )
+     
     });
   }
 
-  handleChange = (itemSelected) => {
+  handleSearchRecipe = (itemSelected) => {
 
     const APP_ID = `${process.env.REACT_APP_APP_ID}`;
     const APP_KEY = `${process.env.REACT_APP_APP_KEY}`;
 
     const url = `https://api.edamam.com/search?q=${itemSelected.value}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+
     this.setState({ loader: true }, async () => {
       await axios
         .get(url)
@@ -40,12 +45,12 @@ class Recipes extends Component {
             tags: itemSelected.value
           });
         })
-        .catch(e => {
+        .catch(error => {
           this.setState({
             loader: false,
-            error: "opss, something went wrong try again"
+            errorMessage: "opss, something went wrong try again"
           });
-          console.log(e);
+          console.error(error);
         });
     });
   };
@@ -65,7 +70,7 @@ class Recipes extends Component {
         <h1>Recipes</h1>
         <Select
           value={itemSelected}
-          onChange={this.handleChange}
+          onChange={this.handleSearchRecipe}
           options={newOptions}
         />
         {tags}
