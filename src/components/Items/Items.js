@@ -21,18 +21,23 @@ class Items extends Component {
 
     return (
       <Fragment>
-  
-               {shoppingLists.map((el, key) => {
+              <div> 
+          {shoppingLists.map((element, key) => {
+                 
               return (
-                <div key={key} className={styles.ItemsStyle}>
+                <div key={key} className={`${styles.ItemsContainer} `}>
+                  <div  className={styles.savedList}>
                   <button onClick={() => deleteList(key)}>delete list</button>
-                  <p>{el.title}</p>
-
-                  {el.items.map((el, key2) => {
+                  <p>{element.title}</p>
+                  
+                  {element.items.map((el, key2) => {
                  
                     const uniqueKey = `${key}-${el.itemTitle}-${key2}`;
                     return (
-                      <div key={uniqueKey}>
+                      <div  key={uniqueKey}>
+                        
+                       
+                <div className={styles.itemsInfo}>
                         {editInput === uniqueKey ? 
                           <div>
 
@@ -41,23 +46,27 @@ class Items extends Component {
                           </div>
                           :
                           <div
-                         
-                        >
-                          <p  style={el.checkbox ? {color:"red"} : null}  onClick={(e) => this.editInput(e, uniqueKey)}>{el.itemTitle}</p>
-                        </div>
-                      }
-                        
-                        <p>{el.person}</p>
-                        <p>{el.price}</p>
-                       
-                        <input
+                            className={styles.itemTitle}
+                          >
+                            <input
                           name="checkboxname"
                           onChange={e => handleCheckbox(e, uniqueKey)}
                           type="checkbox"
                         />
+                          <p  style={el.checkbox ? {color:"red"} : null}  onClick={(e) => this.editInput(e, uniqueKey)}>{el.itemTitle}</p>
+                        </div>
+                        }
+                        
+                        
+                        <p>{el.person}</p>
+                        <p>{el.price}</p>
+                       
+                        
+                       
                         {el.checkbox && this.props.saveInfo === uniqueKey && this.props.saveInfo ? (
-                          <div>
-                            <input
+                          <div className={styles.pricePersonContainer}>
+                              <input
+                                  autoFocus={true}
                               type="number"
                               name="price"
                               onChange={e => this.handleChange(e)}
@@ -74,16 +83,21 @@ class Items extends Component {
                                 saveProductInfo(e, uniqueKey, price, person);
                               }}
                             >
-                              save price and name
+                              save 
                             </button>
                           </div>
-                        ) : null}
+                           
+                          ) : null}
+                          </div>
+                       
                       </div>
                     );
                   })}
+                       </div>
                 </div>
               );
-            })}
+               })}
+          </div>
       </Fragment>
     );
   }

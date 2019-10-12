@@ -1,7 +1,5 @@
 import React, { Fragment, Component } from "react";
-// import styles from "./listsLayout.module.scss";
-
-
+import styles from "./listsLayout.module.scss";
 import Items from "../Items/Items";
 import CreateLists from '../createLists/CreateLists'
 import AddItems from '../AddItems/AddItems'
@@ -11,22 +9,45 @@ class ListsLayout extends Component {
     groupTitle: "",
     shoppingLists: [],
     saveInfo: false,
-    showRecipes: false,
+    displayComponent: false,
     newItems: [],
     messageError: "",
-    showInputs: false
+    showInputs: false,
+    bgColor:false
   };
-  
+    divRef = React.createRef()
+ 
   componentDidUpdate(prevProps, prevState) {
   const {shoppingLists} = this.state
     if (prevState.shoppingLists !== shoppingLists) {
+      console.log('hellloooo')
       this.setState({showInputs:false})
     }
   }
+  componentDidMount() {
+    document.addEventListener("click", this.handleClickOutside, true);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("click", this.handleClickOutside, true);
+  }
   
-showInputsFunc = () => {
-   this.setState({ showInputs: true });
- };
+  showInputsFunc = (outsideClick) => {
+    console.log(outsideClick)
+    this.setState({ showInputs: true})
+    // if (outsideClick) {
+    // this.setState({showInputs:false})
+    // } 
+  };
+  bgColor = () => {
+    this.setState({bgColor:true})
+  }
+  handleClickOutside = e => {
+    // // const { showInputsFunc } = this.props
+    // if (this.divRef.current && !this.divRef.current.contains(e.target) && !!this.state.showInputs) {
+    //   this.setState({ showInputs:false})
+    // }
+  }
+  
  
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -123,28 +144,46 @@ showInputsFunc = () => {
       })
     })
   }
-  displayRecipes = () => {
-    this.setState({ showRecipes: !this.state.showRecipes });
+  displayComponent = (type, ID) => {
+   
+    if (type === 'list') {
+      this.setState({displayComponent:"list"})
+    } else if (type === 'recipes') {
+      this.setState({displayComponent:"recipes"})
+    } else if (type === "expenses") {
+      this.setState({displayComponent:"expenses"})
+    }
+    this.setState({bgColor:ID})
   };
   render() {
-    const { messageError, items, newItems, shoppingLists, saveInfo, itemTitle, showInputs } = this.state;
-
+    const { messageError, items, newItems, shoppingLists, saveInfo, itemTitle, showInputs, bgColor } = this.state;
+    const bgColorLogic = bgColor ? {backgroundColor:"#cccccc"} : null
     return (
       <Fragment>
         {/* <SearchBar  />  */}
-        <button onClick={() => this.displayRecipes()}>
-          {!this.state.showRecipes ? "recipes" : "lists"}
+        <div className={styles.btnsDisplayComponents}>
+        <button  id={"btnDisplayId"} style={bgColor === 0 ? {backgroundColor:"#cccccc", borderBottom: "3px solid #293133" } : null} className={styles.btnDisplay}onClick={() => this.displayComponent("list", 0)}>
+          Your Lists
         </button>
-        <p>{messageError}</p>
+        <button id={"btnDisplayId"} style={bgColor === 1 ? {backgroundColor:"#cccccc", borderBottom: "3px solid #293133" } : null} className={styles.btnDisplay} onClick={() => this.displayComponent("recipes", 1)}>
+          Recipes
+        </button>
+        <button id={"btnDisplayId"} style={bgColor === 2 ? {backgroundColor:"#cccccc" , borderBottom: "3px solid #293133"} : null} className={styles.btnDisplay} onClick={() => this.displayComponent("expenses", 2)}>
+           Expenses
+        </button>
+        </div>
+       
+       <div><p>{messageError}</p></div> 
        
         <CreateLists
           saveShoppingList={this.saveShoppingList}
-          showRecipes={this.state.showRecipes}
+          displayComponent={this.state.displayComponent}
           shoppingLists={shoppingLists}
           newItems={newItems}
           handleChange={this.handleChange}
           showInputsFunc={this.showInputsFunc}
           showInputs={showInputs}
+          divRef={this.divRef}
         />
         <AddItems
           addItems={this.addItems}
@@ -153,6 +192,9 @@ showInputsFunc = () => {
           shoppingLists={shoppingLists}
           saveShoppingList={this.saveShoppingList}
           showInputs={showInputs}
+          handleChange={this.handleChange}
+          showInputsFunc={this.showInputsFunc}
+          divRef={this.divRef}
         />
         <Items
           itemTitle={itemTitle}
@@ -163,7 +205,6 @@ showInputsFunc = () => {
           newItemTitle={this.newItemTitle}
           deleteList={this.deleteList}
         />
-        {shoppingLists.length > 0  ?  null :  <p>your items will be here</p>}
        
       </Fragment>
     );

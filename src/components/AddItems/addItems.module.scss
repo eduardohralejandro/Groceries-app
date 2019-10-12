@@ -1,0 +1,98 @@
+.inputsContainer {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	.inputCreateLists {
+		background-image: none;
+		background-color: rgb(226, 225, 225);
+		border-radius: 5px;
+		border: none;
+		box-shadow: none;
+		outline: none;
+		margin: 0 5rem 0 0;
+		padding: 5rem, 5rem, 8rem, 8rem;
+		height: 3rem;
+		width: 28rem;
+		margin-top: 1rem;
+	}
+
+	.inputCreateLists::placeholder {
+		padding-left: 1rem;
+	}
+	.formAddItems {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-content: flex-start;
+		// height: 5rem;
+		height: auto;
+		margin-top: 0.5rem;
+		@extend .inputCreateLists;
+		input {
+			@extend .inputCreateLists::placeholder;
+			height: 1rem;
+			margin-top: 0.5rem;
+			border: none;
+			box-shadow: none;
+			outline: none;
+			background-color: rgb(226, 225, 225);
+			width: 15rem;
+			height: 3rem;
+			margin-right: 9rem;
+		}
+		.addBtn {
+			background: none;
+			color: inherit;
+			border: none;
+			padding: 0;
+			font: inherit;
+			cursor: pointer;
+			outline: inherit;
+			// margin-left: 1rem;
+		}
+	}
+	.btnsaveShoppingList {
+		background: none;
+		color: inherit;
+		border: none;
+		padding: 0;
+		font: inherit;
+		cursor: pointer;
+		outline: inherit;
+		background-color: black;
+		color: white;
+		padding: 0.2rem 2rem;
+		border-radius: 5px;
+		margin-top: 1rem;
+		margin-left: 13rem;
+	}
+	.itemsList {
+		display: flex;
+		flex-direction: column;
+	}
+	.newItemContainer {
+		display: flex;
+		flex-direction: row;
+		margin-right: 18rem;
+		max-width: 6rem;
+		button {
+			border: none;
+			padding: 0;
+			cursor: pointer;
+			outline: inherit;
+			background-color: black;
+			color: white;
+			display: block;
+			box-sizing: border-box;
+			margin-left: 12rem;
+			height: 2rem;
+			border-radius: 6%;
+			padding: 0.2rem 2rem;
+		}
+		p {
+			max-width: 6rem;
+		}
+	}
+}
