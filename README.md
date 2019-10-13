@@ -22,6 +22,7 @@ save in the database if the text input is empty).
 - Mark as bought (item).
 - When checked item as bought you must add name and price and you can not save in the "database" 
 if is empty.
+- There are always unique IDs for every item created.
 - UX desicions: auto focus in some of the inputs for better experience.
 
 ### `Recipes component`
@@ -44,6 +45,7 @@ of the total money spent of all the employees every month of the year.
 - Clear inputs.
 
 I think to continue the next weeks developing these features / Nodejs, mongodb and jwt as principal tools.
+
 
 
 ### `Proud of & reviewing`
