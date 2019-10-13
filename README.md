@@ -1,7 +1,7 @@
 ## Groceries app
  :tada: 
 
- Groceries app is an application which allows users from companies to do their shopping list for their next event.
+ Groceries app is an application which allows users from companies to create and manage their shopping list for their next event.
 
 You can run this project with 
 
