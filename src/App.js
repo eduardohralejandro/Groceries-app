@@ -12,7 +12,6 @@ const App = () => {
     <Fragment>
       <Router>
         <Navbar />
-
         <Route exact path="/" component={ListsLayout} />
         <Route path="/expenses" component={Expenses} />
         <Route path="/recipes" component={Recipes} />

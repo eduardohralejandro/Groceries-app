@@ -6,8 +6,9 @@ class Items extends Component {
     editInput: false,
     person: "",
     price: "",
-    newItemTitle:""
+    newItemTitle: ""
   }
+  
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -16,19 +17,20 @@ class Items extends Component {
   }
 
   render() {
-    const { shoppingLists, handleCheckbox, saveProductInfo, deleteList} = this.props;
-    const {price, person, newItemTitle, editInput  } = this.state
+    const { shoppingLists, handleCheckbox, saveProductInfo, deleteList, displayComponent} = this.props;
+    const {price, person, newItemTitle, editInput } = this.state
 
     return (
       <Fragment>
-              <div> 
-          {shoppingLists.map((element, key) => {
-                 
+        <div> 
+          {
+           displayComponent !== "list" ? null :
+            shoppingLists.map((element, key) => {
               return (
                 <div key={key} className={`${styles.ItemsContainer} `}>
                   <div  className={styles.savedList}>
-                  <button onClick={() => deleteList(key)}>delete list</button>
-                  <p>{element.title}</p>
+                    <img  alt="deleteList" className={styles.bin} onClick={() => deleteList(key)} src="https://svgshare.com/i/FSv.svg" />
+                  <p className={styles.listTitle}>{element.title}</p>
                   
                   {element.items.map((el, key2) => {
                  
@@ -53,17 +55,17 @@ class Items extends Component {
                           onChange={e => handleCheckbox(e, uniqueKey)}
                           type="checkbox"
                         />
-                          <p  style={el.checkbox ? {color:"red"} : null}  onClick={(e) => this.editInput(e, uniqueKey)}>{el.itemTitle}</p>
+                          <p  style={el.checkbox ? {textDecoration: "line-through"} : null}  onClick={(e) => this.editInput(e, uniqueKey)}>{el.itemTitle}</p>
                         </div>
                         }
-                        
-                        
-                        <p>{el.person}</p>
+                      <span className={styles.pricePersonTitle}>
                         <p>{el.price}</p>
+                        <p >{el.person}</p>
+                        </span>
                        
                         
                        
-                        {el.checkbox && this.props.saveInfo === uniqueKey && this.props.saveInfo ? (
+                        {(el.checkbox && this.props.saveInfo === uniqueKey )|| (el.checkbox && el.price.length === 0 && el.person.length === 0 )? (
                           <div className={styles.pricePersonContainer}>
                               <input
                                   autoFocus={true}

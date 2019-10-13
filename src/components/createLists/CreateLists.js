@@ -17,18 +17,21 @@ const {displayComponent, shoppingLists, newItems, showInputs} = this.props
           <button className={styles.btnAddNewlist} onMouseDown={() => this.props.showInputsFunc()}>
          + Create new list
        </button>
-       {shoppingLists.length > 0 || showInputs ? null :
-        <div className={styles.itemsImg}>
-                <img src={'https://svgshare.com/i/FTm.svg'} />
-      
-                <p>Your items will be here</p>
-            
-              </div>
+            {shoppingLists.length > 0 || showInputs ? null :
+              <div>
+                <div className={styles.itemsImg}>
+               
+                <img alt="items" src={'https://svgshare.com/i/FS_.svg'} />
+                
+                <div>
+               <p>Your items will be here</p>
+                </div>
+              </div>    
+             
               
-                 
-      }
-            
-            
+               
+                </div>
+      } 
         </div>
         }
         

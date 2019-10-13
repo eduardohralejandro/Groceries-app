@@ -5,30 +5,19 @@ class AddItems extends Component {
     itemTitle: "",
     items: [],
     messageError: "",
-    checkbox: false
+    checkbox: false,
+    clickOutside:false
   };
-
-  // componentDidMount() {
-  //   document.addEventListener("click", this.handleClickOutside, true);
-  // }
-  // componentWillUnmount() {
-  //   document.removeEventListener("click", this.handleClickOutside, true);
-  // }
-
-  // handleClickOutside = e => {
-  //   const { showInputsFunc } = this.props
-  //   if (this.props.divRef.current && !this.props.divRef.current.contains(e.target)) {
-  //    showInputsFunc(false)
-  //   }
-  // }
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { shoppingLists } = this.props;
     if (shoppingLists !== prevProps.shoppingLists) {
-      this.setState({ items: [] });
+      this.setState({ items: [], messageError:"" });
+    } else if (prevState.messageError !== this.state.messageError) {
+      this.setState({ messageError:"" });
     }
   }
 
@@ -70,7 +59,7 @@ class AddItems extends Component {
       <Fragment>
         {messageError}
         {showInputs ? (
-          <div className={styles.inputsContainer} ref={this.props.divRef}>
+          <div className={styles.inputsContainer} ref={this.divRef}>
             <button
               className={styles.btnsaveShoppingList}
               onMouseDown={() => {
@@ -101,12 +90,12 @@ class AddItems extends Component {
               <div className={styles.itemsList}>
 {items.map((element, key) => {
   return (
-    <div onClick={e => this.deleteItem(e, key)} className={styles.newItemContainer} key={key}>
-      <div>
+    <div className={styles.newItemContainer} key={key}>
+     
         <p>{element.itemTitle}</p>
-      </div>
-      <div>
-        <button>Delete</button>
+    
+      <div className={styles.binDiv}>
+        <img  alt="deleteItem" className={styles.bin} onClick={e => this.deleteItem(e, key)}src="https://svgshare.com/i/FSv.svg" />
         </div>
     </div>
   );

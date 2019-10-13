@@ -4,3 +4,10 @@
 	margin: auto;
 	background-color: #2f4a6d;
 }
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin-top: 3rem;
+}

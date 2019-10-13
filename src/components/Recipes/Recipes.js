@@ -2,6 +2,7 @@ import React, { Fragment, Component } from "react";
 import axios from "axios";
 import Select from "react-select";
 
+import styles from "../Recipes/recipes.module.scss";
 class Recipes extends Component {
   state = {
     foodRecipes: [],
@@ -43,8 +44,7 @@ class Recipes extends Component {
             loader: false,
             foodRecipes: data.data.hits,
             tags: itemSelected.value
-          });
-        })
+          })})
         .catch(error => {
           this.setState({
             loader: false,
@@ -64,35 +64,41 @@ class Recipes extends Component {
       newOptions,
       error
     } = this.state;
-
     return (
       <Fragment>
-        <h1>Recipes</h1>
-        <Select
+        <div className={styles.select}>
+
+      
+          <Select
+          className={styles.selector}
           value={itemSelected}
           onChange={this.handleSearchRecipe}
           options={newOptions}
-        />
-        {tags}
-
+          />
+        </div>
+        {tags.length > 0 ? 
+        <button className={styles.tags}>{tags}</button>
+          :
+          null
+      }
+        
         {loader ? (
           <div>
-            <p>LOADING...</p>
+           <div className={styles.ring}></div>
           </div>
         ) : (
           <div>
-            {foodRecipes.map((food, key) => {
+              {foodRecipes.map((food, key) => {
+              const result = food.recipe.ingredientLines.join()
               return (
-                <div key={key}>
-                  <img alt="food-recipe" src={food.recipe.image} />
-                  <div>{food.recipe.label}</div>
-                  {food.recipe.ingredients.map((text, keyText) => {
-                    return (
-                      <div key={keyText}>
-                        <p>{text.text}</p>
-                      </div>
-                    );
-                  })}
+                <div className={styles.recipeContainer} key={key}>
+                  <div>
+                    <img className={styles.recipeImg} alt="food-recipe" src={food.recipe.image} />
+                  </div>
+                  <div className={styles.texts}>
+                  <h2>{food.recipe.label}</h2>
+                    <div>{result}</div>
+                    </div>
                 </div>
               );
             })}

@@ -1,12 +1,13 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import styles from "./navbar.module.scss";
+
 
 const Navbar = () => {
   return (
     <Fragment>
-      <h1>Logo</h1>
-      <Link to="/">lists</Link>
-      <h1>profilePic</h1>
+      <div className={styles.logo}>
+        <img alt="brand-logo" src="https://svgshare.com/i/FUq.svg" />
+        </div>
     </Fragment>
   );
 };

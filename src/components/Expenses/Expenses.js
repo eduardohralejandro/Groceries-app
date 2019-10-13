@@ -27,7 +27,7 @@ class Expenses extends Component {
     const { charData } = this.state
 
     const dates=[{month:'January',value:0},{month:'February',value:0},{month:'March',value:0},{month:'April',value:0},{month:'May',value:0},{month:'June',value:0},{month:'July',value:0},{month:'August',value:0},{month:'September',value:0},{month:'October',value:0},{month:'November',value:0},{month:'December',value:0}];
-    /** add all the values from charData(shoppingLists data)  & assign it to dates array to feed graph data*/
+    /** add all the values from charData(shoppingLists data)  & assign it to dates array to feed the graph*/
     charData.map(el => {
       return (
         dates.map(element => {
@@ -57,7 +57,7 @@ class Expenses extends Component {
     const xScale = d3.scaleBand()
      .range([0, width])
      .domain(dates.map((element) => element.month))
-     .padding(0.6)
+     .padding(0.0)
    
     const yScale = d3.scaleLinear()
      .range([height, 0])
@@ -79,20 +79,12 @@ class Expenses extends Component {
      .attr('y', (el) => yScale(el.value))
      .attr('height', (el) => height - yScale(el.value))
      .attr('width', xScale.bandwidth())
-      
-    //FOR NEXT REFACTOR: styling
-    // const barTransition = d3.transition()
-    //   .duration(3000)
-    //   .delay((dataPoint, iteration) => iteration * 10)
-    //   .ease(d3.easeLinear)
-    // bars.transition(barTransition)
-    //   .style("fill", "orange");
 }
   render() {
     return (
       <Fragment>
         <div className={styles.container} id="svgContainer">
-      <svg width="600" height="500" className={styles.svg} ref={'canvas'} />
+      <svg width="800" height="500" className={styles.svg} ref={'canvas'} />
         </div>
       </Fragment>
     );
