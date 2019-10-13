@@ -1,68 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Groceries app
+ :tada: 
 
-## Available Scripts
+ Groceries app is an application which allow users from companies to do their shopping list for their next event.
 
-In the project directory, you can run:
+You can run this project with 
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `Features`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### `Home/component: main component`
 
-### `npm test`
+- Add title to the shopping list 
+- You can add items to the shopping list.
+- Delete items while creating a list.
+- Save shopping list (thinking in a database)
+- You can not save if all the information required is not completed(e.g you could not 
+save in the database if the text input is empty).
+- Display list in a organised way.
+- Delete an entire list.
+- Mark as bought (item).
+- When checked item as bought you must add name and price and you can not save in the "database" 
+if is empty.
+- UX desicions: auto focus in some of the inputs for better experience.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `Recipes component`
 
-### `npm run build`
+- Select dropdown.
+- Select recipes from API based in the ingredients on the list of the company.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `Expenses`
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- In this tab will be displayed the amount.
+of the total money spent of all the employees every month of the year.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `Improvementes/features for next versions`
+ 
+- A better css stucture, improve UI/mobile versions.
+- We can edit an item + delete item after being saved - (login system: these actions can only be done by an admin)
+- Build search bar.
+- Save recipes.
+- Logs.
+- Clear inputs.
 
-### `npm run eject`
+I think to continue the next weeks developing these features / Nodejs, mongodb and jwt as principal tools.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `Proud of & reviewing`
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I was curious about graphs(D3js) and React.js so for the first time I built a feature combining these two technologies(expenses component), when I saw the bar from my graph taking my props and going up was awesone.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+But I think you can check more ListsLayouts/Items/Additems and maybe recipes but the first three are the main part of the application, it was a great experience.
 
-## Learn More
+Eduardo Hernandez
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[website](link here for heroku) 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
