@@ -11,13 +11,13 @@ You can run this project with
 
 ### `Home/component: main component`
 
-- Add title to the shopping list 
+- Add title to the shopping list.
 - You can add items to the shopping list.
 - Delete items while creating a list.
 - Save shopping list (thinking in a database)
 - You can not save if all the information required is not completed(e.g you could not 
 save in the database if the text input is empty).
-- Display list in a organised way.
+- Display list in an organised way.
 - Delete an entire list.
 - Mark as bought (item).
 - When checked item as bought you must add name and price and you can not save in the "database" 
