@@ -1,21 +1,20 @@
 .inputsContainer {
 	align-items: center;
 	display: flex;
-	justify-content: center;
 	flex-direction: column;
+	justify-content: center;
 	.inputCreateLists {
 		background-image: none;
 		background-color: rgb(255, 255, 255);
 		border-radius: 5px;
 		border: none;
-		box-shadow: none;
-		outline: none;
-		margin: 0 5rem 0 0;
-		padding: 5rem, 5rem, 8rem, 8rem;
-		height: 3rem;
-		width: 28rem;
-		margin-top: 1rem;
 		box-shadow: 0px 2px 8px 0px rgba(207, 214, 214, 1);
+		height: 3rem;
+		margin: 0 5rem 0 0;
+		margin-top: 1rem;
+		outline: none;
+		padding: 5rem, 5rem, 8rem, 8rem;
+		width: 28rem;
 	}
 
 	.inputCreateLists::placeholder {
@@ -27,20 +26,18 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-content: flex-start;
-		// height: 5rem;
 		height: auto;
 		margin-top: 0.5rem;
 		@extend .inputCreateLists;
 		input {
 			@extend .inputCreateLists::placeholder;
-			height: 1rem;
+			height: 3rem;
 			margin-top: 0.5rem;
 			border: none;
 			box-shadow: none;
 			outline: none;
 			background-color: rgb(255, 255, 255);
 			width: 15rem;
-			height: 3rem;
 			margin-right: 9rem;
 		}
 		.addBtn {
@@ -51,7 +48,6 @@
 			font: inherit;
 			cursor: pointer;
 			outline: inherit;
-			// margin-left: 1rem;
 		}
 	}
 	.btnsaveShoppingList {
@@ -102,4 +98,12 @@
 			max-width: 1rem;
 		}
 	}
+}
+.messageError {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	color: red;
+	margin-right: 4rem;
+	margin-top: 2rem;
 }

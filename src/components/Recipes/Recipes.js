@@ -12,25 +12,21 @@ class Recipes extends Component {
     loader: false,
     tags: ""
   };
-   componentDidMount() {
+  componentDidMount() {
     const { shoppingLists } = this.props;
 
     shoppingLists.map(list => {
-      return (
-        list.items.map(item => {
-          const options = { label: item.itemTitle, value: item.itemTitle };
-          this.setState(prevState => ({
-            newOptions: [...prevState.newOptions, options]
-          }));
-          return item
-        })
-      )
-     
+      return list.items.map(item => {
+        const options = { label: item.itemTitle, value: item.itemTitle };
+        this.setState(prevState => ({
+          newOptions: [...prevState.newOptions, options]
+        }));
+        return item;
+      });
     });
   }
 
-  handleSearchRecipe = (itemSelected) => {
-
+  handleSearchRecipe = itemSelected => {
     const APP_ID = `${process.env.REACT_APP_APP_ID}`;
     const APP_KEY = `${process.env.REACT_APP_APP_KEY}`;
 
@@ -44,7 +40,8 @@ class Recipes extends Component {
             loader: false,
             foodRecipes: data.data.hits,
             tags: itemSelected.value
-          })})
+          });
+        })
         .catch(error => {
           this.setState({
             loader: false,
@@ -56,49 +53,31 @@ class Recipes extends Component {
   };
 
   render() {
-    const {
-      itemSelected,
-      tags,
-      loader,
-      foodRecipes,
-      newOptions,
-      error
-    } = this.state;
+    const { itemSelected, tags, loader, foodRecipes, newOptions, error } = this.state;
     return (
       <Fragment>
         <div className={styles.select}>
-
-      
-          <Select
-          className={styles.selector}
-          value={itemSelected}
-          onChange={this.handleSearchRecipe}
-          options={newOptions}
-          />
+          <Select className={styles.selector} value={itemSelected} onChange={this.handleSearchRecipe} options={newOptions} />
         </div>
-        {tags.length > 0 ? 
-        <button className={styles.tags}>{tags}</button>
-          :
-          null
-      }
-        
+        {tags.length > 0 ? <button className={styles.tags}>{tags}</button> : null}
+
         {loader ? (
           <div>
-           <div className={styles.ring}></div>
+            <div className={styles.ring}></div>
           </div>
         ) : (
           <div>
-              {foodRecipes.map((food, key) => {
-              const result = food.recipe.ingredientLines.join()
+            {foodRecipes.map((food, key) => {
+              const result = food.recipe.ingredientLines.join();
               return (
                 <div className={styles.recipeContainer} key={key}>
                   <div>
-                    <img className={styles.recipeImg} alt="food-recipe" src={food.recipe.image} />
+                    <img className={styles.recipeImg} alt='food-recipe' src={food.recipe.image} />
                   </div>
                   <div className={styles.texts}>
-                  <h2>{food.recipe.label}</h2>
+                    <h2>{food.recipe.label}</h2>
                     <div>{result}</div>
-                    </div>
+                  </div>
                 </div>
               );
             })}

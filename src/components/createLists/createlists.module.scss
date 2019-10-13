@@ -1,14 +1,12 @@
 .btnContainer {
 	align-items: center;
 	display: flex;
-	justify-content: center;
 	flex-direction: column;
-
+	justify-content: center;
 	.btnAddNewlist {
 		background-color: #443bff;
 		border-radius: 5px;
 		border: none;
-		color: inherit;
 		cursor: pointer;
 		font: inherit;
 		padding: 0;
