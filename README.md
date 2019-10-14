@@ -46,7 +46,7 @@ of the total money spent of all the employees every month of the year.
 - Logs.
 - Clear inputs.
 
-I think to continue the next weeks developing these features / Nodejs, mongodb and jwt as principal tools.
+I think to continue the next weeks developing these features.
 
 
 
@@ -58,5 +58,5 @@ But I think you can check more ListsLayouts/Items/Additems and maybe recipes but
 
 Eduardo Hernandez
 
-[website](link here for heroku) 
+
 
