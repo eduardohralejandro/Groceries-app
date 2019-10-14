@@ -1,5 +1,7 @@
 ## Groceries app
  :tada: 
+ 
+Visit the live version here --> https://listitonce.herokuapp.com
 
  Groceries app is an application which allows users from companies to create and manage their shopping list for their next event.
 
