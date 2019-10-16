@@ -10,16 +10,18 @@ class Recipes extends Component {
     errorMessage: "",
     newOptions: [],
     loader: false,
-    tags: ""
+    tags: "",
+  
   };
   componentDidMount() {
     const { shoppingLists } = this.props;
-
+    this._isMounted = true
     shoppingLists.map(list => {
       return list.items.map(item => {
         const options = { label: item.itemTitle, value: item.itemTitle };
         this.setState(prevState => ({
           newOptions: [...prevState.newOptions, options]
+          
         }));
         return item;
       });
@@ -32,23 +34,21 @@ class Recipes extends Component {
 
     const url = `https://api.edamam.com/search?q=${itemSelected.value}&app_id=${APP_ID}&app_key=${APP_KEY}`;
 
-    this.setState({ loader: true }, async () => {
-      await axios
-        .get(url)
-        .then(data => {
+      this.setState({ loader: true, }, async () => {
+        try {
+          const data = await axios.get(url)
           this.setState({
             loader: false,
             foodRecipes: data.data.hits,
             tags: itemSelected.value
-          });
-        })
-        .catch(error => {
+          })
+        } catch (e) {
           this.setState({
             loader: false,
             errorMessage: "opss, something went wrong try again"
-          });
-          console.error(error);
-        });
+          })
+          console.log(e)
+        }
     });
   };
 
