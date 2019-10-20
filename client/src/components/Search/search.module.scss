@@ -1,0 +1,15 @@
+.searchInput {
+	display: flex;
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+	margin: 0rem 8rem 2rem 0;
+	input {
+		outline: none;
+		border: 1px rgb(204, 204, 204) solid;
+		border-radius: 6px;
+		background-image: none;
+		background-color: transparent;
+		padding: 0.5rem 7rem 0.5rem 1rem;
+	}
+}

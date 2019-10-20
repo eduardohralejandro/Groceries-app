@@ -3,6 +3,7 @@ import styles from "./listsLayout.module.scss";
 import Items from "../Items/Items";
 import CreateLists from "../createLists/CreateLists";
 import AddItems from "../AddItems/AddItems";
+import Search from '../Search/Search'
 class ListsLayout extends Component {
    state = {
       groupTitle: "",
@@ -12,7 +13,8 @@ class ListsLayout extends Component {
       newItems: [],
       messageError: "",
       showInputs: false,
-      bgColor: false
+      bgColor: false,
+      searchedValue:[]
    };
 
    componentDidUpdate(prevProps, prevState) {
@@ -22,6 +24,8 @@ class ListsLayout extends Component {
       } else if (prevState.displayComponent !== this.state.displayComponent) {
          this.setState({ showInputs: false });
       }
+
+     
    }
 
    showInputsFunc = () => {
@@ -35,6 +39,15 @@ class ListsLayout extends Component {
    handleChange = e => {
       this.setState({ [e.target.name]: e.target.value });
    };
+
+   searchedValue = async (value) => {
+      if (value && value.length > 0) {
+         await this.setState({searchedValue:value})
+      } else if (value && value.length === 0) {
+         await this.setState({ searchedValue: [] })
+        
+      }
+   }
 
    saveShoppingList = items => {
       const { groupTitle } = this.state;
@@ -130,6 +143,7 @@ class ListsLayout extends Component {
 
       return (
          <Fragment>
+               <Search  shoppingLists={shoppingLists} searchedValue={this.searchedValue}  displayComponent={this.state.displayComponent}/>
             <div className={styles.btnsDisplayComponents}>
                <button
                   id={"btnDisplayId"}
@@ -157,7 +171,7 @@ class ListsLayout extends Component {
             <div className={styles.errorMessage}>
                <p>{messageError}</p>
             </div>
-
+         
             <CreateLists
                saveShoppingList={this.saveShoppingList}
                displayComponent={this.state.displayComponent}
@@ -189,6 +203,7 @@ class ListsLayout extends Component {
                deleteList={this.deleteList}
                showInputs={showInputs}
                displayComponent={this.state.displayComponent}
+               searchedValue={this.state.searchedValue}
             />
          </Fragment>
       );

@@ -6,7 +6,9 @@ class Items extends Component {
     person: "",
     price: ""
   };
-
+  componentDidUpdate(prevState) {
+    console.log(prevState)
+  }
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -15,7 +17,7 @@ class Items extends Component {
   };
 
   render() {
-    const { shoppingLists, handleCheckbox, saveProductInfo, deleteList, displayComponent, saveInfo } = this.props;
+    const { shoppingLists, handleCheckbox, saveProductInfo, deleteList, displayComponent, saveInfo, searchedValue } = this.props;
     const { price, person } = this.state;
 
     return (
@@ -23,7 +25,7 @@ class Items extends Component {
         <div>
           {displayComponent !== "list"
             ? null
-            : shoppingLists.map((element, key) => {
+            :  (searchedValue && searchedValue.length > 0  ? searchedValue : shoppingLists).map((element, key) => {
                 return (
                   <div key={key} className={styles.ItemsContainer}>
                     <div className={styles.savedList}>
@@ -66,7 +68,7 @@ class Items extends Component {
                     </div>
                   </div>
                 );
-              })}
+              }) }
         </div>
       </Fragment>
     );
