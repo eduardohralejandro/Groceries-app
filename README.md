@@ -26,6 +26,7 @@ save in the database if the text input is empty).
 if is empty.
 - There are always unique IDs for every item created.
 - UX desicions: auto focus in some of the inputs for better experience.
+- Search bar - find your list much more easily.
 
 ### `Recipes component`
 
@@ -41,7 +42,6 @@ of the total money spent of all the employees every month of the year.
  
 - A better css stucture, improve UI/mobile versions.
 - We can edit an item + delete item after being saved - (login system: these actions can only be done by an admin)
-- Build search bar.
 - Save recipes.
 - Logs.
 - Clear inputs.
